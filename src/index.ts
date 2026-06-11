@@ -8,9 +8,22 @@ import uploadRouter from './routes/upload.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000')
+  .split(',')
+  .map((url) => url.trim())
+  .filter(Boolean);
 
-app.use(cors({ origin: FRONTEND_URL }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
