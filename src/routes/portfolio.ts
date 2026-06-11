@@ -17,11 +17,14 @@ const PORTFOLIO_SELECT = `
   categories ( name )
 `;
 
+function getCategoryName(categories: PortfolioItem['categories']): string {
+  if (!categories) return 'Uncategorized';
+  if (Array.isArray(categories)) return categories[0]?.name ?? 'Uncategorized';
+  return categories.name ?? 'Uncategorized';
+}
+
 function toResponse(item: PortfolioItem): PortfolioItemResponse {
-  const categoryName =
-    item.categories?.name ??
-    (Array.isArray(item.categories) ? item.categories[0]?.name : undefined) ??
-    'Uncategorized';
+  const categoryName = getCategoryName(item.categories);
 
   return {
     id: item.id,
