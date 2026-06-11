@@ -7,7 +7,7 @@ export interface PortfolioItem {
   is_published: boolean;
   created_at: string;
   updated_at: string;
-  categories?: { name: string } | null;
+  categories?: { name: string } | { name: string }[] | null;
 }
 
 export interface PortfolioItemInput {
